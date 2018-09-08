@@ -57,6 +57,13 @@ public class LoginPanelBoard extends JPanel {
 			String user = username.getText();
 			String passkey = password.getText();
 
+                        UserDatabase db;
+                        try {
+                            db = new UserDatabase();
+                            db.logIn(user, passkey);
+                        } catch (IOException ex) {
+                        Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 		}
 	}
 
