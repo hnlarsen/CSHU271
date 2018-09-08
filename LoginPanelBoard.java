@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -63,6 +66,13 @@ public class LoginPanelBoard extends JPanel {
 			String newuser = username.getText();
 			String newpasskey = password.getText();
 
+                        UserDatabase db;
+                        try {
+                            db = new UserDatabase();
+                            db.registerUser(newuser, newpasskey);
+                        } catch (IOException ex) {
+                            Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 		}
 	}
 
