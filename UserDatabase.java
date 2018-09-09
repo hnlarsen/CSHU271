@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.InvalidParameterException;
 /*
- *  Database class for storing and retrieving
- *  the account credentials for registered users.
+ *  Database class for storing and retrieving the account credentials for 
+ *  registered users.
+ *  Stores data in the following format:
+ *          <username>\t<password hash>\t<email>\t<phone number>\n
+ *  Note: Phone number format (###)###-####
  *  @author Heather N. Larsen
- *  @version    1.2    2018/09/08:01:00
+ *  @version    1.3    2018/09/09:01:45
  */
 public class UserDatabase {
     private File database;          //registered accounts database
@@ -39,7 +42,8 @@ public class UserDatabase {
      *  @throws IOException issue read/write to file
      *  @throws IllegalArgumentException username is already registered
      */
-    protected void registerUser(String username, String password) throws IOException {          
+    protected void registerUser(String username, String password, String email,
+            String phone) throws IOException {          
         if(userExists(username)) {
             throw new IllegalArgumentException("This username is already taken.");
         }
@@ -47,7 +51,8 @@ public class UserDatabase {
         database.setWritable(true);
         PrintWriter writer = new PrintWriter(new BufferedWriter((new FileWriter(database, true))));
 
-        writer.write(username + "\t" + password.hashCode() + "\n");
+        writer.write(username + "\t" + password.hashCode() + "\t" + email + "\t" +
+                phone + "\n");
         
         writer.close();
         database.setWritable(false);
@@ -105,4 +110,26 @@ public class UserDatabase {
         
         return false;
     }/*******************************USER.EXISTS********************************/
+    /**
+     *  Checks if an email exists in the database.
+     *  @param email email to be searched for
+     *  @return true if email exists in database
+     */
+    protected boolean emailExists(String email) throws FileNotFoundException, IOException {
+        database.setReadable(true);
+        reader = new BufferedReader(new FileReader(database));
+
+        String[] credentials; //current individual credentials
+        String tempEmail;     //current email
+        
+        while((tempMarker = reader.readLine()) != null) {
+            credentials  = tempMarker.split("\t");
+            tempEmail = credentials[2];
+            if(email.compareToIgnoreCase(tempEmail) == 0) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }/*******************************USER.DATABASE_CLASS****************************/
