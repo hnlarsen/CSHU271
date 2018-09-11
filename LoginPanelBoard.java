@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+/**
+ * @author chrismiller558
+ *
+ */
 public class LoginPanelBoard extends JPanel {
 
 	// Instance variable//
@@ -21,7 +25,7 @@ public class LoginPanelBoard extends JPanel {
 	JTextField username, password;
 
 	/**
-	 * 
+	 * This is the main constructor of the login panel window.
 	 */
 	public LoginPanelBoard() {
 		
@@ -52,6 +56,11 @@ public class LoginPanelBoard extends JPanel {
 		//this.setBackground(Color.GRAY);
 	}
 
+	/**
+	 * ActionlListener for the login button.
+	 * @author chrismiller558
+	 *
+	 */
 	public class LoginButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -64,10 +73,16 @@ public class LoginPanelBoard extends JPanel {
                             db.logIn(user, passkey);
                         } catch (IOException ex) {
                         Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
+                        
                     }
 		}
 	}
 
+	/**
+	 * ActionlListener for the signup button.
+	 * @author chrismiller558
+	 *
+	 */
 	public class SignupButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
@@ -76,3 +91,7 @@ public class LoginPanelBoard extends JPanel {
 	}
 
 }
+
+	
+	
+	
