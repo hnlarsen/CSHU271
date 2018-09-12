@@ -243,20 +243,22 @@ public class SignUpGUI extends javax.swing.JPanel {
                 errorMessage.setText("Password must be 8-16 characters long.");
                 return false;
             }
-            //Password must contain 1 uppercase letter
+            
             boolean upperFlag = false;
             boolean lowerFlag = false;
             boolean numFlag   = false;
             boolean charFlag  = false;
+            
             for(int i = 0; i < password.length(); ++i) {
                 String sp = "/*!@#$%^&*()\\\"{}_[]|\\\\?/<>,.";
                 char ch = password.charAt(i);
                 
                 if(Character.isUpperCase(ch))             { upperFlag = true; }
                 if(Character.isLowerCase(ch))             { lowerFlag = true; }
-                if(Character.isDigit(ch))                 { numFlag = true; }
-                if(sp.contains(password.substring(i, 1))) { charFlag = true; }
-            }           
+                if(Character.isDigit(ch))                 { numFlag   = true; }
+                if(sp.contains(password.substring(i, i))) { charFlag  = true; }
+            }      
+            //Password must contain 1 uppercase letter
             if(!upperFlag) {
                 errorMessage.setText("Password must contain at least one uppercase letter.");
                 return false;
