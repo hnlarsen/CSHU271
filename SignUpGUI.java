@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 /*
  *  The sign-up popup for the website.
  *  @author Heather N. Larsen
- *  @version    1.0     2018/09/08:18:55
+ *  @version    1.1     2018/09/12:17:11
  */
 public class SignUpGUI extends javax.swing.JPanel {
 
@@ -230,11 +230,52 @@ public class SignUpGUI extends javax.swing.JPanel {
      *  @return true if both password fields match and not null
      */
     private boolean checkPassword() {
-        if(getPassword.getText().compareTo("") == 0) {
+        String password = getPassword.getText();
+        
+        if(password.compareTo("") == 0) {
             errorMessage.setText("Please enter a password.");
             return false;
         }
-        else if(getPassword.getText().compareTo(getConfirmPassword.getText()) == 0) {
+        else if(password.compareTo(getConfirmPassword.getText()) == 0) {
+            //Password must be min of 8 characters max of 16
+            if((8 > password.length()) || (
+                    password.length() > 16)) {
+                errorMessage.setText("Password must be 8-16 characters long.");
+                return false;
+            }
+            //Password must contain 1 uppercase letter
+            boolean upperFlag = false;
+            boolean lowerFlag = false;
+            boolean numFlag   = false;
+            boolean charFlag  = false;
+            for(int i = 0; i < password.length(); ++i) {
+                String sp = "/*!@#$%^&*()\\\"{}_[]|\\\\?/<>,.";
+                char ch = password.charAt(i);
+                
+                if(Character.isUpperCase(ch))             { upperFlag = true; }
+                if(Character.isLowerCase(ch))             { lowerFlag = true; }
+                if(Character.isDigit(ch))                 { numFlag = true; }
+                if(sp.contains(password.substring(i, 1))) { charFlag = true; }
+            }           
+            if(!upperFlag) {
+                errorMessage.setText("Password must contain at least one uppercase letter.");
+                return false;
+            }
+            //Password must contain 1 lowercase letter
+            if(!lowerFlag) {
+                errorMessage.setText("Password must contain at least one lowercase letter.");
+                return false;
+            }
+            //Password must contain 1 number
+            if(!numFlag) {
+                errorMessage.setText("Password must contain at least one digit.");
+                return false;
+            }
+            //Password must contain 1 special character
+            if(!charFlag) {
+                errorMessage.setText("Password must contain at least one special character.");
+                return false;
+            }
             return true;
         }
         else {
@@ -287,7 +328,7 @@ public class SignUpGUI extends javax.swing.JPanel {
                     "the Terms of Service agreement.");
             return false;
         }
-    }
+    }/**********************************CHECK.BOX*******************************/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ToSCheckBox;
     private javax.swing.JLabel createAccount;
@@ -301,4 +342,4 @@ public class SignUpGUI extends javax.swing.JPanel {
     private javax.swing.JLabel logo;
     private javax.swing.JButton signUpButton;
     // End of variables declaration//GEN-END:variables
-}
+}/********************************SIGN.UP.GUI_CLASS*****************************/
