@@ -29,10 +29,9 @@ class LoginPanelBoardTest {
 	void testUsername() {
 		
 	
-		
+		UserDatabase db;
 		
 		try {
-			UserDatabase db;
 			db = new UserDatabase();
 			db.registerUser("username01", "password01", "usernameEmail@email.com", null);
 			assertTrue("", db.emailExists("usernameEmail@email.com")==true); 
