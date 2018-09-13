@@ -1,7 +1,11 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 /*
  *  The sign-up popup for the website.
@@ -9,13 +13,13 @@ import javax.swing.SwingUtilities;
  *  @version    1.1     2018/09/12:17:11
  */
 public class SignUpGUI extends javax.swing.JPanel {
-
     /**
      * Creates new form SignUpGUI
      */
     public SignUpGUI() {
         initComponents();
-
+        
+        //Text fields for registration credentials
         this.getUsername.setBorder(BorderFactory.createTitledBorder("Username"));
         this.getEmail.setBorder(BorderFactory.createTitledBorder("Email"));
         this.getPhone.setBorder(BorderFactory.createTitledBorder("Phone (optional)"));
@@ -45,14 +49,18 @@ public class SignUpGUI extends javax.swing.JPanel {
         signUpButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         errorMessage = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        errorMessage1 = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(230, 230, 230));
 
         createAccount.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        createAccount.setText("Create Your <> Account");
+        createAccount.setText("Create Your Heartbleed Account");
 
         logo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        logo.setText("<>");
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/heartbleed.png"))); // NOI18N
+        logo.setMaximumSize(new java.awt.Dimension(341, 413));
+        logo.setMinimumSize(new java.awt.Dimension(341, 413));
 
         getUsername.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         getUsername.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -121,64 +129,86 @@ public class SignUpGUI extends javax.swing.JPanel {
         errorMessage.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(errorMessage);
 
+        jScrollPane4.setBorder(null);
+
+        errorMessage1.setEditable(false);
+        errorMessage1.setBackground(new java.awt.Color(230, 230, 230));
+        errorMessage1.setColumns(100);
+        errorMessage1.setFont(new java.awt.Font("Poor Richard", 2, 15)); // NOI18N
+        errorMessage1.setLineWrap(true);
+        errorMessage1.setRows(2);
+        errorMessage1.setText("Passwords must be 8-16 characters long and contain:\n                     1   uppercase  character\n                     1   lowercase  character\n                     1   special  character\n                     1   digit");
+        errorMessage1.setWrapStyleWord(true);
+        errorMessage1.setAutoscrolls(false);
+        errorMessage1.setBorder(null);
+        errorMessage1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane4.setViewportView(errorMessage1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 68, Short.MAX_VALUE)
-                .addComponent(ToSCheckBox)
-                .addGap(61, 61, 61))
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(getEmail)
+                                .addComponent(getUsername)
+                                .addComponent(getPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                                .addComponent(getPassword)
+                                .addComponent(getConfirmPassword))
+                            .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(createAccount))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(getEmail)
-                            .addComponent(getUsername)
-                            .addComponent(getPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                            .addComponent(getPassword)
-                            .addComponent(getConfirmPassword))
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(24, 24, 24)
                                 .addComponent(signUpButton))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(25, 25, 25))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(ToSCheckBox)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(createAccount)
-                .addGap(23, 23, 23)
-                .addComponent(getUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(getEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(createAccount)
+                        .addGap(23, 23, 23)
+                        .addComponent(getUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(getPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
-                        .addComponent(getPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(getEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(getPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(getPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(signUpButton)
-                    .addComponent(getConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(signUpButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(getConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(ToSCheckBox)
-                .addGap(19, 19, 19))
+                .addGap(26, 26, 26))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -335,12 +365,14 @@ public class SignUpGUI extends javax.swing.JPanel {
     private javax.swing.JCheckBox ToSCheckBox;
     private javax.swing.JLabel createAccount;
     private javax.swing.JTextArea errorMessage;
+    private javax.swing.JTextArea errorMessage1;
     private javax.swing.JPasswordField getConfirmPassword;
     private javax.swing.JTextField getEmail;
     private javax.swing.JPasswordField getPassword;
     private javax.swing.JFormattedTextField getPhone;
     private javax.swing.JTextField getUsername;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel logo;
     private javax.swing.JButton signUpButton;
     // End of variables declaration//GEN-END:variables
