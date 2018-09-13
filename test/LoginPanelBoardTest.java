@@ -13,7 +13,7 @@ import org.junit.Test;
 import sprint1.LoginPanelBoard;
 import sprint1.UserDatabase;
 
-class LoginPanelBoardTest {
+class LoginPanelBoardTest { 
 	
 	private LoginPanelBoard login = new LoginPanelBoard();
 
@@ -28,22 +28,19 @@ class LoginPanelBoardTest {
 	@Test
 	void testUsername() {
 		
-		String user = "username01";
-		String passkey = "password01";
+	
 		
 		
-		
-		
-		UserDatabase db;
 		try {
+			UserDatabase db;
 			db = new UserDatabase();
-			assertTrue("", db.userExists(user)==true);
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
+			db.registerUser("username01", "password01", "usernameEmail@email.com", null);
+			assertTrue("", db.emailExists("usernameEmail@email.com")==true); 
+		}
+		 catch (IOException ex) {
 			Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
-		fail("Not yet implemented");
 	
 	
 	}
