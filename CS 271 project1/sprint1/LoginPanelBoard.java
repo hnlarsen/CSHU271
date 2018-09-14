@@ -22,8 +22,8 @@ import javax.swing.JTextField;
 public class LoginPanelBoard extends JPanel {
 
 	// Instance variable//
-	JButton loginButton, signupButton;
-	JPanel gridPanel, loginPanel, fieldPanel;
+	JButton loginButton, signupButton, retrievePassword, retrieveUsername;
+	JPanel loginPanel, fieldPanel, retrievePanel;
 	JTextField username, password;
 
 	/**
@@ -42,8 +42,18 @@ public class LoginPanelBoard extends JPanel {
 
 		loginPanel = new JPanel();
 		fieldPanel = new JPanel();
+		retrievePanel = new JPanel();
 		loginPanel.add(loginButton);
 		loginPanel.add(signupButton);
+		
+		this.retrieveUsername = new JButton("Forgot Password?");
+		this.retrieveUsername.addActionListener(new RetrieveUsernameListener());
+		this.retrievePassword = new JButton("Forgot Username?");
+		this.retrievePassword.addActionListener(new RetrievePasswordListener());
+		
+		
+		retrievePanel.add(retrieveUsername);
+		retrievePanel.add(retrievePassword);
 
 		this.username = new JTextField(20);
 		this.username.setBorder(BorderFactory.createTitledBorder("Username"));
@@ -52,9 +62,13 @@ public class LoginPanelBoard extends JPanel {
 
 		fieldPanel.add(username);
 		fieldPanel.add(password);
-
+		
+		//fieldPanel.setLayout(new BorderLayout());
 		this.add(fieldPanel, BorderLayout.NORTH);
+		//loginPanel.setLayout(new BorderLayout());
 		this.add(loginPanel, BorderLayout.SOUTH);
+		//retrievePanel.setLayout(new BorderLayout());
+		this.add(retrievePanel, BorderLayout.SOUTH);
 		// this.setBackground(Color.GRAY);
 	}
 
@@ -91,6 +105,20 @@ public class LoginPanelBoard extends JPanel {
 
 		public void actionPerformed(ActionEvent e) {
 			SignUpContainer signUp = new SignUpContainer();
+		}
+	}
+	
+	public class RetrieveUsernameListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
+	public class RetrievePasswordListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 

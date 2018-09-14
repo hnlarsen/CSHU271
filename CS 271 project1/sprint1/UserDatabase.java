@@ -17,18 +17,19 @@ import javax.swing.JPanel;
  *  Database class for storing and retrieving the account credentials for 
  *  registered users.
  *  Stores data in the following format:
- *          <username>\t<password hash>\t<email>\t<phone number>\n
+ *          <username>\t<password hash>\t<email>\t<SQ#.(answer)>\t<SQ#.(answer)>\t<[phone number]>\n
  *  Note: Phone number format (###)###-####
- *  @author Heather N. Larsen
+ *  @authors Heather N. Larsen, Chris Miller
  *  @version    1.3    2018/09/09:01:45
  */
 public class UserDatabase {
 	private File database; // registered accounts database
-	private BufferedReader reader; // database reader
-	private String tempMarker; // current account credentials
+	private BufferedReader reader; // database reader	
 	private JPanel loginS, loginF, loginNF;
 	private JLabel login1, login2, login3;
-	private boolean loginSucess = false;
+	private boolean loginSuccess = false;
+        
+        protected String tempMarker; // current account credentials
 
 	/**
 	 * Creates:Opens the user database.
@@ -47,7 +48,7 @@ public class UserDatabase {
 		database.setReadable(false);
 	}
 
-	/***************************** USER.DATABASE ********************************/
+	/***************************USER.DATABASE ******************************/
 	/**
 	 * Registers the user's account credentials into the database.
 	 * 
@@ -72,7 +73,7 @@ public class UserDatabase {
 		database.setReadable(false);
 	}
 
-	/***************************** REGISTER.USER ********************************/
+	/*****************************REGISTER.USER*****************************/
 	/**
 	 * Logs the user into the account matching the login credentials.
 	 * 
@@ -91,7 +92,7 @@ public class UserDatabase {
 				// TODO: login success!
 				loginS = new JPanel();
 				
-				loginSucess = true;
+				loginSuccess = true;
 
 				login1 = new JLabel("Login was successful. Welcome!");
 
@@ -110,14 +111,13 @@ public class UserDatabase {
 				// throw new InvalidParameterException("The username and password do not
 				// match.");
 				loginF = new JPanel();
-				loginSucess = false;
 
 				login2 = new JLabel("The username and password do not match.");
 
 				loginF.add(login2);
 
 				JFrame frame = new JFrame("LoginFailed");
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 				/* Add frame */
 				frame.getContentPane().add(loginF);
@@ -128,14 +128,13 @@ public class UserDatabase {
 		} else {
 			// throw new IllegalArgumentException("This account does not exist.");
 			loginNF = new JPanel();
-			loginSucess = false;
 
 			login3 = new JLabel("This account does not exist.");
 
 			loginNF.add(login3);
 
 			JFrame frame = new JFrame("LoginFailed");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 			/* Add frame */
 			frame.getContentPane().add(loginNF);
@@ -148,7 +147,7 @@ public class UserDatabase {
 		database.setReadable(false);
 	}
 
-	/******************************** LOG.IN ************************************/
+	/*******************************LOG.IN**********************************/
 	/**
 	 * Checks if the account exists in the database.
 	 * 
@@ -175,8 +174,7 @@ public class UserDatabase {
 		return false;
 	}
 
-
-	/******************************* USER.EXISTS ********************************/
+	/**************************** USER.EXISTS ******************************/
 	/**
 	 * Checks if an email exists in the database.
 	 * 
@@ -201,10 +199,35 @@ public class UserDatabase {
 		return false;
 	}
 	
-	public boolean getLoginState(){
-		return loginSucess;
+	/**************************** DELETE.USER ******************************/
+	/**
+	 * Deletes a specific user in the database.
+	 * 
+	 * @param user user to be searched for and deleted
+	 * @return true if the user is deleted successfully
+	 */
+	public boolean deleteUser(String user) throws FileNotFoundException, IOException {
+		database.setReadable(true);
+		//database.setWritable(true);
+		reader = new BufferedReader(new FileReader(database));
+
+		String[] credentials; // current individual credentials
+		String tempUser; // current email
+
+		while ((tempMarker = reader.readLine()) != null) {
+			credentials = tempMarker.split("\t");
+			tempUser = credentials[0];
+			if (user.compareToIgnoreCase(tempUser) == 0) {
+				tempMarker.replaceAll(user, null);
+				return true;
+			}
+		}
+
+		return false;
 	}
 	
-}/*******************************
-	 * USER.DATABASE_CLASS
-	 ****************************/
+	public boolean getLoginState(){
+		return loginSuccess;
+	}
+	
+}/********************************USER.DATABASE_CLASS***************************/
