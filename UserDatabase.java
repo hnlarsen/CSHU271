@@ -1,3 +1,4 @@
+package sprint1;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,6 +27,7 @@ public class UserDatabase {
 	private BufferedReader reader; // database reader	
 	private JPanel loginS, loginF, loginNF;
 	private JLabel login1, login2, login3;
+	private boolean loginSucess = false;
         
         protected String tempMarker; // current account credentials
 
@@ -194,4 +196,9 @@ public class UserDatabase {
 
 		return false;
 	}
+	
+	public boolean getLoginState(){
+		return loginSucess;
+	}
+	
 }/********************************USER.DATABASE_CLASS***************************/
