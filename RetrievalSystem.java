@@ -1,3 +1,4 @@
+package sprint1;
 import java.io.IOException;
 import javax.naming.NameNotFoundException;
 /*
