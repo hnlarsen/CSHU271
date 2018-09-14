@@ -101,7 +101,7 @@ public class LoginPanelBoardTest {
 			db.registerUser("usertest1", "Password1!", "usernameEmail@email.com", null);
 			db.logIn("usertest1", "Password1!");
 			assertTrue(db.getLoginState() == true);
-			db.deleteUser("username1");
+			db.deleteUser("username1", "Password1!", "usernameEmail@email.com", null);
 		} catch (IOException ex) {
 			Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -114,23 +114,93 @@ public class LoginPanelBoardTest {
 	 * 
 	 * 
 	 */
+//	@Test
+//	public void testDeleteUser() {
+//		UserDatabase db;
+//		try {
+//			db = new UserDatabase();
+//			db.registerUser("usertest1", "Password1!", "usernameEmail@email.com", null);
+//			db.logIn("usertest1", "Password1!"); // create user
+//			if (db.getLoginState() == true) { // if user successfully created
+//				db.deleteUser("usertest1"); // delete user
+//				assertTrue(db.getLoginState() == false); // Check to make sure
+//															// registered
+//															// user.equals false
+//			} else if (db.getLoginState() == false) {
+//				System.out.print("Failed successfully login!");
+//			}
+//		} catch (IOException ex) {
+//			Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
+//		}
+//	}
+//	
+//	@Test
+//
+//	public void testRegisterUser() {
+//
+//		UserDatabase db;
+//
+//
+//
+//		try {
+//
+//			db = new UserDatabase();
+//
+//			db.deleteFile();
+//
+//			db.registerUser("usertest", "Password1", "usernameEmail@email.com", null);
+//
+//			db.logIn("usertest", "Password1");
+//
+//			assertTrue(db.getLoginState() == true);
+//
+//			//db.deleteFile();
+//
+//		} catch (IOException ex) {
+//
+//			Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
+//
+//		}
+//
+//
+//
+//	}
+
 	@Test
+
 	public void testDeleteUser() {
+
 		UserDatabase db;
+
 		try {
+
 			db = new UserDatabase();
-			db.registerUser("usertest1", "Password1!", "usernameEmail@email.com", null);
-			db.logIn("usertest1", "Password1!"); // create user
+
+			//db.deleteFile();
+
+			db.registerUser("usertest!", "Password1!", "usernameEmail@email.com", null);
+
+			db.logIn("usertest!", "Password1!"); // create user
+
 			if (db.getLoginState() == true) { // if user successfully created
-				db.deleteUser("usertest1"); // delete user
+
+				db.deleteUser("usertest!", "Password1!", "usernameEmail@email.com", null); // delete user
+
 				assertTrue(db.getLoginState() == false); // Check to make sure
+
 															// registered
+
 															// user.equals false
+
 			} else if (db.getLoginState() == false) {
+
 				System.out.print("Failed successfully login!");
+
 			}
+
 		} catch (IOException ex) {
+
 			Logger.getLogger(LoginPanelBoard.class.getName()).log(Level.SEVERE, null, ex);
+
 		}
-	}
 }
