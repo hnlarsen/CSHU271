@@ -1,4 +1,5 @@
 package sprint1;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,12 +25,13 @@ import javax.swing.JPanel;
  */
 public class UserDatabase {
 	private File database; // registered accounts database
-	private BufferedReader reader; // database reader	
+	private BufferedReader reader; // database reader
+	private BufferedWriter writer;
 	private JPanel loginS, loginF, loginNF;
 	private JLabel login1, login2, login3;
 	private boolean loginSuccess = false;
-        
-        protected String tempMarker; // current account credentials
+
+	protected String tempMarker; // current account credentials
 
 	/**
 	 * Creates:Opens the user database.
@@ -48,7 +50,7 @@ public class UserDatabase {
 		database.setReadable(false);
 	}
 
-	/***************************USER.DATABASE ******************************/
+	/*************************** USER.DATABASE ******************************/
 	/**
 	 * Registers the user's account credentials into the database.
 	 * 
@@ -73,7 +75,7 @@ public class UserDatabase {
 		database.setReadable(false);
 	}
 
-	/*****************************REGISTER.USER*****************************/
+	/***************************** REGISTER.USER *****************************/
 	/**
 	 * Logs the user into the account matching the login credentials.
 	 * 
@@ -91,7 +93,7 @@ public class UserDatabase {
 			if (tempPassword == password.hashCode()) {
 				// TODO: login success!
 				loginS = new JPanel();
-				
+
 				loginSuccess = true;
 
 				login1 = new JLabel("Login was successful. Welcome!");
@@ -147,7 +149,7 @@ public class UserDatabase {
 		database.setReadable(false);
 	}
 
-	/*******************************LOG.IN**********************************/
+	/******************************* LOG.IN **********************************/
 	/**
 	 * Checks if the account exists in the database.
 	 * 
@@ -198,7 +200,7 @@ public class UserDatabase {
 
 		return false;
 	}
-	
+
 	/**************************** DELETE.USER ******************************/
 	/**
 	 * Deletes a specific user in the database.
@@ -206,28 +208,101 @@ public class UserDatabase {
 	 * @param user user to be searched for and deleted
 	 * @return true if the user is deleted successfully
 	 */
-	public boolean deleteUser(String user) throws FileNotFoundException, IOException {
+//	public boolean deleteUser(String user) throws FileNotFoundException, IOException {
+//		database.setReadable(true);
+//		//database.setWritable(true);
+//		reader = new BufferedReader(new FileReader(database));
+//
+//		String[] credentials; // current individual credentials
+//		String tempUser; // current email
+//
+//		while ((tempMarker = reader.readLine()) != null) {
+//			credentials = tempMarker.split("\t");
+//			tempUser = credentials[0];
+//			if (user.compareToIgnoreCase(tempUser) == 0) {
+//				tempMarker.replaceAll(user, null);
+//				return true;
+//			}
+//		}
+//
+//		return false;
+//	}
+
+	public boolean deleteUser(String user, String pass, String email, String phone) throws FileNotFoundException, IOException {
+
 		database.setReadable(true);
-		//database.setWritable(true);
+
+		database.setWritable(true);
+
+		File tempFile = new File("USER-DATABASETEMP");
+
 		reader = new BufferedReader(new FileReader(database));
 
-		String[] credentials; // current individual credentials
-		String tempUser; // current email
+		writer = new BufferedWriter(new FileWriter(tempFile));
 
-		while ((tempMarker = reader.readLine()) != null) {
-			credentials = tempMarker.split("\t");
-			tempUser = credentials[0];
-			if (user.compareToIgnoreCase(tempUser) == 0) {
-				tempMarker.replaceAll(user, null);
-				return true;
-			}
+		String lineToRemove = "usertest!" + "\t" + "Password1!" + "\t" + "usernameEmail@email.com";
+
+		String currentLine;
+
+		while ((currentLine = reader.readLine()) != null) {
+
+			String trimmedLine = currentLine.trim();
+
+			if (trimmedLine.equals(lineToRemove))
+				continue;
+
+			writer.write(currentLine + System.getProperty("line.separator"));
+
 		}
 
+		File database = tempFile;
+
 		return false;
+
 	}
-	
-	public boolean getLoginState(){
+
+	public boolean deleteFile() throws IOException, FileNotFoundException {
+
+		File databaseTemp = new File("USER-DATABASE");
+
+		reader = new BufferedReader(new FileReader(database));
+
+		writer = new BufferedWriter(new FileWriter(databaseTemp));
+
+		String current_line;
+
+		while ((current_line = reader.readLine()) != null) {
+
+			// System.out.println("Here.");
+
+			current_line = current_line.replaceAll("\\s+", " ");
+
+			writer.write(current_line);
+
+			writer.newLine();
+
+		}
+
+		reader.close();
+
+		writer.close();
+
+		File copyFile = new File("USER-DATABASE");
+
+		File originalFile = new File("USER-DATABASE");
+
+		originalFile.delete();
+
+		copyFile.renameTo(originalFile);
+
+		return true;
+
+	}
+
+	public boolean getLoginState() {
 		return loginSuccess;
 	}
-	
-}/********************************USER.DATABASE_CLASS***************************/
+
+}/********************************
+	 * USER.DATABASE_CLASS
+	 ***************************/
