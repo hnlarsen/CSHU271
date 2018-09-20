@@ -1,17 +1,58 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NameNotFoundException;
+
 /*
  *  Password retrieval pop-up promting for security question answer.
  *  @author Heather N. Larsen
  *  @version    1.0    2018/09/15:20:08
  */
 public class SecurityQuestionGUI extends javax.swing.JPanel {
-
+    private String sq1;  //security question 1
+    private String sq2;  //security question 2
+    private String sa1;  //security answer 1
+    private String sa2;  //security answer 2
+    private int n;       //current security question
+    private int attempt; //total attempts answer security questions
+    private final int MAX_ATTEMPTS;
     /**
      * Creates new form SecurityQuestionGUI
+     * @param val username/email
      */
-    public SecurityQuestionGUI() {
+    public SecurityQuestionGUI(String val) throws IOException, FileNotFoundException, NameNotFoundException {
+        attempt      = 0;
+        MAX_ATTEMPTS = 1;
+        
         initComponents();
+        
+        accountRetrieval1.setVisible(false);
+        
+        getSecurityQuestions(val);
+        
+        if(Math.random() <= 0.5) {
+            n = 1;
+        }
+        else {
+            n = 2;
+        }
+        
+        initSQ();
     }
-
+    /**
+     *  Initialize the security question.
+     *  @param n the security question to be initialized
+     *  @throws IOException 
+     */
+    private void initSQ() throws IOException {
+        if(n == 1) {
+            securityQuestion.setText(sq1);
+        }
+        else {
+            securityQuestion.setText(sq2);
+        }
+    }/*****************************INIT.SQ**************************************/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,8 +67,9 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
         jScrollPane4 = new javax.swing.JScrollPane();
         securityQuestion = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        answer = new javax.swing.JTextArea();
         nextButton = new javax.swing.JButton();
+        accountRetrieval1 = new javax.swing.JLabel();
 
         logo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/heartbleed.png"))); // NOI18N
@@ -53,12 +95,21 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
         securityQuestion.setOpaque(false);
         jScrollPane4.setViewportView(securityQuestion);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(1);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createTitledBorder("Answer"));
-        jScrollPane1.setViewportView(jTextArea1);
+        answer.setColumns(20);
+        answer.setRows(1);
+        answer.setBorder(javax.swing.BorderFactory.createTitledBorder("Answer"));
+        jScrollPane1.setViewportView(answer);
 
         nextButton.setText("Next");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        accountRetrieval1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        accountRetrieval1.setForeground(new java.awt.Color(255, 0, 51));
+        accountRetrieval1.setText("Maximum attempts made.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -80,6 +131,11 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
                                 .addComponent(nextButton)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(209, Short.MAX_VALUE)
+                    .addComponent(accountRetrieval1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(29, 29, 29)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,15 +151,146 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(39, 39, 39)
+                    .addComponent(accountRetrieval1)
+                    .addContainerGap(152, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        if(attempt == MAX_ATTEMPTS) {
+            accountRetrieval1.setVisible(true);
+            return;
+        }
+        
+        int a      = answer.getText().hashCode();
+        String ans = Integer.toString(a);
+
+        if(n == 1) {
+           if(ans.compareTo(sa1) == 0) {
+               try {
+                   RetrievePasswordContainer rt = new RetrievePasswordContainer();
+                   rt.passReset(sa1);
+               } catch (IOException ex) {
+                   Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
+               } catch (NameNotFoundException ex) {
+                   Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+           ++attempt;
+           n = 2;
+            try {
+                initSQ();
+            } catch (IOException ex) {
+                Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else if(n == 2) {
+            if(ans.compareTo(sa2) == 0) {
+               try {
+                   RetrievePasswordContainer rt = new RetrievePasswordContainer();
+                   rt.passReset(sa1);
+               } catch (IOException ex) {
+                   Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
+               } catch (NameNotFoundException ex) {
+                   Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
+               } 
+            }
+            ++attempt;
+            n = 1;
+            try {
+                initSQ();
+            } catch (IOException ex) {
+                Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    /**
+     *  Grabs the security questions from the database.
+     *  @param val username/email
+     */
+    private void getSecurityQuestions(String val) throws IOException, FileNotFoundException, NameNotFoundException {
+        UserDatabase db = new UserDatabase();
+        
+        if(!db.emailExists(val)&&!db.userExists(val)) { return; }
+        
+        String[] credentials = db.tempMarker.split("\t");
+        String   qanswer1    = credentials[3];
+        String   qanswer2    = credentials[4];
+        String[] question1   = qanswer1.split("-");
+        String[] question2   = qanswer2.split("-");
+        String   q1          = question1[0];
+        String   q2          = question2[0];
+        
+        sa1 = question1[1];
+        sa2 = question2[1];
+
+        getQuestionStrings(q1, q2);
+    }/*************************GET.SECURITY.QUESTIONS***************************/
+    /**
+     *  Gets the Strings for the actual security questions.
+     *  @param q1 question 1
+     *  @param q2 question 2
+     */
+    private void getQuestionStrings(String q1, String q2) throws IOException {
+        RetrievalSystem rs = new RetrievalSystem(); 
+            
+        if     (q1.compareTo("sq1") ==  0) { sq1 = rs.sQ1 ; }
+        else if(q1.compareTo("sq2") ==  0) { sq1 = rs.sQ2 ; }
+        else if(q1.compareTo("sq3") ==  0) { sq1 = rs.sQ3 ; }
+        else if(q1.compareTo("sq4") ==  0) { sq1 = rs.sQ4 ; }
+        else if(q1.compareTo("sq5") ==  0) { sq1 = rs.sQ5 ; }
+        else if(q1.compareTo("sq6") ==  0) { sq1 = rs.sQ6 ; }
+        else if(q1.compareTo("sq7") ==  0) { sq1 = rs.sQ7 ; }
+        else if(q1.compareTo("sq8") ==  0) { sq1 = rs.sQ8 ; }
+        else if(q1.compareTo("sq9") ==  0) { sq1 = rs.sQ9 ; }
+        else if(q1.compareTo("sq10") == 0) { sq1 = rs.sQ10; }
+        else if(q1.compareTo("sq11") == 0) { sq1 = rs.sQ11; }
+        else if(q1.compareTo("sq12") == 0) { sq1 = rs.sQ12; }
+        else if(q1.compareTo("sq13") == 0) { sq1 = rs.sQ13; }
+        else if(q1.compareTo("sq14") == 0) { sq1 = rs.sQ14; }
+        else if(q1.compareTo("sq15") == 0) { sq1 = rs.sQ15; }
+        else if(q1.compareTo("sq16") == 0) { sq1 = rs.sQ16; }
+        else if(q1.compareTo("sq17") == 0) { sq1 = rs.sQ17; }
+        else if(q1.compareTo("sq18") == 0) { sq1 = rs.sQ18; }
+        else if(q1.compareTo("sq19") == 0) { sq1 = rs.sQ19; }
+        else if(q1.compareTo("sq20") == 0) { sq1 = rs.sQ20; }
+        else if(q1.compareTo("sq21") == 0) { sq1 = rs.sQ21; }
+        else if(q1.compareTo("sq22") == 0) { sq1 = rs.sQ22; }
+        
+        if     (q2.compareTo("sq1") ==  0) { sq2 = rs.sQ1 ; }
+        else if(q2.compareTo("sq2") ==  0) { sq2 = rs.sQ2 ; }
+        else if(q2.compareTo("sq3") ==  0) { sq2 = rs.sQ3 ; }
+        else if(q2.compareTo("sq4") ==  0) { sq2 = rs.sQ4 ; }
+        else if(q2.compareTo("sq5") ==  0) { sq2 = rs.sQ5 ; }
+        else if(q2.compareTo("sq6") ==  0) { sq2 = rs.sQ6 ; }
+        else if(q2.compareTo("sq7") ==  0) { sq2 = rs.sQ7 ; }
+        else if(q2.compareTo("sq8") ==  0) { sq2 = rs.sQ8 ; }
+        else if(q2.compareTo("sq9") ==  0) { sq2 = rs.sQ9 ; }
+        else if(q2.compareTo("sq10") == 0) { sq2 = rs.sQ10; }
+        else if(q2.compareTo("sq11") == 0) { sq2 = rs.sQ11; }
+        else if(q2.compareTo("sq12") == 0) { sq2 = rs.sQ12; }
+        else if(q2.compareTo("sq13") == 0) { sq2 = rs.sQ13; }
+        else if(q2.compareTo("sq14") == 0) { sq2 = rs.sQ14; }
+        else if(q2.compareTo("sq15") == 0) { sq2 = rs.sQ15; }
+        else if(q2.compareTo("sq16") == 0) { sq2 = rs.sQ16; }
+        else if(q2.compareTo("sq17") == 0) { sq2 = rs.sQ17; }
+        else if(q2.compareTo("sq18") == 0) { sq2 = rs.sQ18; }
+        else if(q2.compareTo("sq19") == 0) { sq2 = rs.sQ19; }
+        else if(q2.compareTo("sq20") == 0) { sq2 = rs.sQ20; }
+        else if(q2.compareTo("sq21") == 0) { sq2 = rs.sQ21; }
+        else if(q2.compareTo("sq22") == 0) { sq2 = rs.sQ22; }
+    }/************************GET.QUESTION.STRINGS******************************/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel accountRetrieval;
+    private javax.swing.JLabel accountRetrieval1;
+    private javax.swing.JTextArea answer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel logo;
     private javax.swing.JButton nextButton;
     private javax.swing.JTextArea securityQuestion;

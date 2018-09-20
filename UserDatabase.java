@@ -70,9 +70,12 @@ public class UserDatabase {
                 if (userExists(username)) {
 			throw new IllegalArgumentException("This username is already taken.");
 		}
+
+                String question1 = checkQuestion(sq1);
+                String question2 = checkQuestion(sq2);
                 
-                String sQ1 = sq1 + "." + sq1a.hashCode();
-                String sQ2 = sq2 + "." + sq2a.hashCode();
+                String sQ1 = question1 + "-" + sq1a.hashCode();
+                String sQ2 = question2 + "-" + sq2a.hashCode();
 
 		database.setWritable(true);
 		PrintWriter writer = new PrintWriter(new BufferedWriter((new FileWriter(database, true))));
@@ -82,9 +85,40 @@ public class UserDatabase {
 
 		writer.close();
 		database.setWritable(false);
-	}
-
-	/*****************************REGISTER.USER*****************************/
+	}/****************************REGISTER.USER*****************************/
+        /**
+         *  Matches the security question to the String.
+         *  @param q the security question
+         *  @return compressed String value
+         */
+        private String checkQuestion(String q) throws IOException {
+            RetrievalSystem rs = new RetrievalSystem(); 
+            
+            if(q.compareTo(rs.sQ1)  == 0) { return "sq1" ; }
+            if(q.compareTo(rs.sQ2)  == 0) { return "sq2" ; }
+            if(q.compareTo(rs.sQ3)  == 0) { return "sq3" ; }
+            if(q.compareTo(rs.sQ4)  == 0) { return "sq4" ; }
+            if(q.compareTo(rs.sQ5)  == 0) { return "sq5" ; }
+            if(q.compareTo(rs.sQ6)  == 0) { return "sq6" ; }
+            if(q.compareTo(rs.sQ7)  == 0) { return "sq7" ; }
+            if(q.compareTo(rs.sQ8)  == 0) { return "sq8" ; }
+            if(q.compareTo(rs.sQ9)  == 0) { return "sq9" ; }
+            if(q.compareTo(rs.sQ10) == 0) { return "sq10"; }
+            if(q.compareTo(rs.sQ11) == 0) { return "sq11"; }
+            if(q.compareTo(rs.sQ12) == 0) { return "sq12"; }
+            if(q.compareTo(rs.sQ13) == 0) { return "sq13"; }
+            if(q.compareTo(rs.sQ14) == 0) { return "sq14"; }
+            if(q.compareTo(rs.sQ15) == 0) { return "sq15"; }
+            if(q.compareTo(rs.sQ16) == 0) { return "sq16"; }
+            if(q.compareTo(rs.sQ17) == 0) { return "sq17"; }
+            if(q.compareTo(rs.sQ18) == 0) { return "sq18"; } 
+            if(q.compareTo(rs.sQ19) == 0) { return "sq19"; }
+            if(q.compareTo(rs.sQ20) == 0) { return "sq20"; }
+            if(q.compareTo(rs.sQ21) == 0) { return "sq21"; }
+            if(q.compareTo(rs.sQ22) == 0) { return "sq22"; }
+            
+            return null;
+        }/*****************************CHECK.QUESTION***************************/
 	/**
 	 * Logs the user into the account matching the login credentials.
 	 * 
@@ -269,4 +303,32 @@ public class UserDatabase {
         protected boolean getLoginState() {
             return loginSuccess;
         }/*************************GET.LOGIN.STATE******************************/
+        /**
+        *  Replaces the password recorded in the database with a new one.
+        *  @param val username/email
+        *  @param pass new password
+        */
+        protected void replacePassword(String val, String pass) throws IOException, FileNotFoundException, NameNotFoundException {
+            if(!userExists(val)&&!emailExists(val)) {
+                return;
+            }
+            String temp          = tempMarker;
+            String[] credentials = tempMarker.split("\t");
+            String user          = credentials[0];
+            String newPass       = pass;
+            String email         = credentials[2];
+            
+            String[] sq1         = credentials[3].split("-");
+            String[] sq2         = credentials[4].split("-");
+            String q1            = sq1[0];
+            String a1            = sq1[1];
+            String q2            = sq2[0];
+            String a2            = sq2[1];
+            
+            String phone         = credentials[5];
+            
+            deleteUser(val);
+            
+            registerUser(user, newPass, email, q1, a1, q2, a2, phone);
+        }/*****************************REPLACE.PASSWORD*************************/
 }/********************************USER.DATABASE_CLASS***************************/

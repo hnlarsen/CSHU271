@@ -1,4 +1,6 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import javax.naming.NameNotFoundException;
 import javax.swing.JFrame;
 
 /*
@@ -7,16 +9,16 @@ import javax.swing.JFrame;
  *  @version    1.0    2018/09/15:20:08
  */
 public class RetrievePasswordContainer {
-    JFrame frame;
-    RetrievePasswordGUI rp;
-    SecurityQuestionGUI sa;
+    private JFrame frame;
+    private RetrievePasswordGUI rp;
+    private SecurityQuestionGUI sa;
+    private PassResetGUI pr;
     /**
      *  Default constructor.
      */
     public RetrievePasswordContainer() throws IOException {
         frame = new JFrame("Retrieve Password");
         rp = new RetrievePasswordGUI();
-        sa = new SecurityQuestionGUI();
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
@@ -31,9 +33,20 @@ public class RetrievePasswordContainer {
     }/************************GATHER.CREDENTIAL*********************************/
     /**
      *  Pulls up the prompt for the user to enter the account security answer.
+     *  @param val username/email
      */
-    protected void gatherSecurityAnswer() {
+    protected void gatherSecurityAnswer(String val) throws IOException, FileNotFoundException, NameNotFoundException {
+        sa = new SecurityQuestionGUI(val);
         frame.getContentPane().add(sa);
         frame.pack();
-    }/************************GATHER.SECURITY.ANSWER*********************************/
+    }/************************GATHER.SECURITY.ANSWER****************************/
+    /**
+     *  Pulls up the prompt for the user to enter the account security answer.
+     *  @param val username/email
+     */
+    protected void passReset(String val) throws IOException, FileNotFoundException, NameNotFoundException {
+        pr = new PassResetGUI(val);
+        frame.getContentPane().add(pr);
+        frame.pack();
+    }/************************GATHER.SECURITY.ANSWER****************************/
 }/***********************RETRIEVE.PASSWORD.CONTAINER_CLASS**********************/

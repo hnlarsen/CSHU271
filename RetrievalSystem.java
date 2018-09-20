@@ -73,16 +73,4 @@ public class RetrievalSystem {
         secQ0 = credentials[3];
         secQ1 = credentials[4];
     }/*******************************RETRIEVE.ACCOUNT***************************/
-    /**
-     *  Replaces the password recorded in the database with a new one.
-     *  @param pass new password
-     */
-    private void replacePassword(String pass) {
-        String[] credentials = db.tempMarker.split("\t");
-        String password      = credentials[1];
-
-        String newPass  = Integer.toString(pass.hashCode());
-        
-        db.tempMarker.replace(password, newPass);
-    }/*****************************REPLACE.PASSWORD*****************************/
 }/***************************RETRIEVAL.SYSTEM_CLASS*****************************/

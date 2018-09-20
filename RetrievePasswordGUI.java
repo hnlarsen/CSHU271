@@ -195,7 +195,7 @@ public class RetrievePasswordGUI extends javax.swing.JPanel {
             SwingUtilities.getWindowAncestor(this).dispose();
             
             RetrievePasswordContainer rp = new RetrievePasswordContainer();
-            rp.gatherSecurityAnswer();
+            rp.gatherSecurityAnswer(getAccountCredential.getText());
         } catch (IOException ex) {
             Logger.getLogger(RetrieveUsernameGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NameNotFoundException ex) {
