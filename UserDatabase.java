@@ -39,7 +39,7 @@ public class UserDatabase {
 	protected UserDatabase() throws IOException {
 		database = new File("USER-DATABASE");
 
-		if (!database.exists()) {
+		if(!database.exists()) {
 			database.createNewFile(); // create database if not in directory
 		}
 
@@ -280,6 +280,7 @@ public class UserDatabase {
                     
             while((line != null)) {
                 if(line.compareTo(tempMarker) == 0) { line = reader.readLine(); }
+                if(line == null) { break; }
                 
                 updatedDB = updatedDB + line + System.lineSeparator();
                 line      = reader.readLine();
@@ -312,23 +313,27 @@ public class UserDatabase {
             if(!userExists(val)&&!emailExists(val)) {
                 return;
             }
+            
             String temp          = tempMarker;
-            String[] credentials = tempMarker.split("\t");
+            String[] credentials = temp.split("\t");
             String user          = credentials[0];
             String newPass       = pass;
             String email         = credentials[2];
             
-            String[] sq1         = credentials[3].split("-");
-            String[] sq2         = credentials[4].split("-");
-            String q1            = sq1[0];
-            String a1            = sq1[1];
-            String q2            = sq2[0];
-            String a2            = sq2[1];
+            String   sq1         = credentials[3];
+            String   sq2         = credentials[4];
             
             String phone         = credentials[5];
             
             deleteUser(val);
             
-            registerUser(user, newPass, email, q1, a1, q2, a2, phone);
+            database.setWritable(true);
+		PrintWriter writer = new PrintWriter(new BufferedWriter((new FileWriter(database, true))));
+
+		writer.write(user + "\t" + newPass + "\t" + email + 
+                        "\t" + sq1 + "\t" + sq2 + "\t" + phone + System.lineSeparator());
+
+		writer.close();
+		database.setWritable(false);
         }/*****************************REPLACE.PASSWORD*************************/
 }/********************************USER.DATABASE_CLASS***************************/

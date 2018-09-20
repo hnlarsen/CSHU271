@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NameNotFoundException;
+import javax.swing.SwingUtilities;
 
 /*
  *  Password retrieval pop-up promting for security question answer.
@@ -17,6 +18,7 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
     private int n;       //current security question
     private int attempt; //total attempts answer security questions
     private final int MAX_ATTEMPTS;
+    private String val;
     /**
      * Creates new form SecurityQuestionGUI
      * @param val username/email
@@ -24,6 +26,7 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
     public SecurityQuestionGUI(String val) throws IOException, FileNotFoundException, NameNotFoundException {
         attempt      = 0;
         MAX_ATTEMPTS = 1;
+        this.val     = val;
         
         initComponents();
         
@@ -172,7 +175,8 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
            if(ans.compareTo(sa1) == 0) {
                try {
                    RetrievePasswordContainer rt = new RetrievePasswordContainer();
-                   rt.passReset(sa1);
+                   rt.passReset(val);
+                   SwingUtilities.getWindowAncestor(this).dispose();
                } catch (IOException ex) {
                    Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
                } catch (NameNotFoundException ex) {
@@ -191,7 +195,8 @@ public class SecurityQuestionGUI extends javax.swing.JPanel {
             if(ans.compareTo(sa2) == 0) {
                try {
                    RetrievePasswordContainer rt = new RetrievePasswordContainer();
-                   rt.passReset(sa1);
+                   rt.passReset(val);
+                   SwingUtilities.getWindowAncestor(this).dispose();
                } catch (IOException ex) {
                    Logger.getLogger(SecurityQuestionGUI.class.getName()).log(Level.SEVERE, null, ex);
                } catch (NameNotFoundException ex) {

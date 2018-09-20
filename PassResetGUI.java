@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NameNotFoundException;
+import javax.swing.SwingUtilities;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -41,6 +42,8 @@ public class PassResetGUI extends javax.swing.JPanel {
         nextButton = new javax.swing.JButton();
         getPassword = new javax.swing.JPasswordField();
         getConfirmPassword = new javax.swing.JPasswordField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        errorMessage = new javax.swing.JTextArea();
 
         logo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/heartbleed.png"))); // NOI18N
@@ -70,6 +73,21 @@ public class PassResetGUI extends javax.swing.JPanel {
         getConfirmPassword.setBorder(javax.swing.BorderFactory.createTitledBorder("Confirm Password"));
         getConfirmPassword.setSelectionColor(new java.awt.Color(204, 0, 0));
 
+        jScrollPane2.setBorder(null);
+
+        errorMessage.setEditable(false);
+        errorMessage.setBackground(new java.awt.Color(230, 230, 230));
+        errorMessage.setColumns(100);
+        errorMessage.setForeground(new java.awt.Color(255, 0, 0));
+        errorMessage.setLineWrap(true);
+        errorMessage.setRows(2);
+        errorMessage.setWrapStyleWord(true);
+        errorMessage.setAutoscrolls(false);
+        errorMessage.setBorder(null);
+        errorMessage.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        errorMessage.setOpaque(false);
+        jScrollPane2.setViewportView(errorMessage);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -82,12 +100,16 @@ public class PassResetGUI extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(accountRetrieval))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(getPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(getConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addComponent(nextButton)))
+                        .addComponent(getConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(nextButton))
+                    .addComponent(getPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(61, 61, 61)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(33, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,14 +118,17 @@ public class PassResetGUI extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(accountRetrieval))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(getPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(getConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addComponent(getPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(getConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(43, 43, 43)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(89, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -122,37 +147,102 @@ public class PassResetGUI extends javax.swing.JPanel {
             .addGap(0, 208, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 16, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 16, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void getPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getPasswordActionPerformed
+
+    }//GEN-LAST:event_getPasswordActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         if(getPassword.getText().compareTo(getConfirmPassword.getText()) == 0) {
             try {
                 UserDatabase db = new UserDatabase();
                 String newpass  = Integer.toString(getPassword.getText().hashCode());
-                db.replacePassword(val, newpass);
+                
+                if(checkPassword()) {
+                    db.replacePassword(val, newpass);
+                    SwingUtilities.getWindowAncestor(this).dispose();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(PassResetGUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NameNotFoundException ex) {
                 Logger.getLogger(PassResetGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
         }
     }//GEN-LAST:event_nextButtonActionPerformed
 
-    private void getPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getPasswordActionPerformed
-
-    }//GEN-LAST:event_getPasswordActionPerformed
-
+        /**
+     *  Checks if the password and confirmed password match.
+     *  @return true if both password fields match and not null
+     */
+    protected boolean checkPassword() {
+        String password = getPassword.getText();
+        
+        if(password.compareTo("") == 0) {
+            errorMessage.setText("Please enter a password.");
+            return false;
+        }
+        else if(password.compareTo(getConfirmPassword.getText()) == 0) {
+            //Password must be min of 8 characters max of 16
+            if((8 > password.length()) || (
+                    password.length() > 16)) {
+                errorMessage.setText("Password must be 8-16 characters long.");
+                return false;
+            }
+            
+            boolean upperFlag = false;
+            boolean lowerFlag = false;
+            boolean numFlag   = false;
+            boolean charFlag  = false;
+            
+            for(int i = 0; i < password.length(); ++i) {
+                String sp = "/*!@#$%^&*()\\\"{}_[]|\\\\?/<>,.";
+                char ch = password.charAt(i);
+                
+                if(Character.isUpperCase(ch))             { upperFlag = true; }
+                if(Character.isLowerCase(ch))             { lowerFlag = true; }
+                if(Character.isDigit(ch))                 { numFlag   = true; }
+                if(sp.contains(password.substring(i, i))) { charFlag  = true; }
+            }      
+            //Password must contain 1 uppercase letter
+            if(!upperFlag) {
+                errorMessage.setText("Password must contain at least one uppercase letter.");
+                return false;
+            }
+            //Password must contain 1 lowercase letter
+            if(!lowerFlag) {
+                errorMessage.setText("Password must contain at least one lowercase letter.");
+                return false;
+            }
+            //Password must contain 1 number
+            if(!numFlag) {
+                errorMessage.setText("Password must contain at least one digit.");
+                return false;
+            }
+            //Password must contain 1 special character
+            if(!charFlag) {
+                errorMessage.setText("Password must contain at least one special character.");
+                return false;
+            }
+            return true;
+        }
+        else {
+            errorMessage.setText("The entered passwords do not match.");
+            return false; 
+        }
+    }/******************************CHECK.PASSWORD******************************/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel accountRetrieval;
+    private javax.swing.JTextArea errorMessage;
     private javax.swing.JPasswordField getConfirmPassword;
     private javax.swing.JPasswordField getPassword;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel logo;
     private javax.swing.JButton nextButton;
     // End of variables declaration//GEN-END:variables
