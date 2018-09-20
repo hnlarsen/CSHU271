@@ -336,4 +336,37 @@ public class UserDatabase {
 		writer.close();
 		database.setWritable(false);
         }/*****************************REPLACE.PASSWORD*************************/
+        /**
+        *  Replaces the username recorded in the database with a new one.
+        *  @param old username
+        *  @param nu new username
+        *  @param pass new password
+        */
+        protected void replaceUsername(String old, String nu) throws IOException, FileNotFoundException, NameNotFoundException {
+            if(!userExists(old)&&!emailExists(old)) {
+                return;
+            }
+            
+            String temp          = tempMarker;
+            String[] credentials = temp.split("\t");
+            String user          = nu;
+            String pass          = credentials[1];
+            String email         = credentials[2];
+            
+            String   sq1         = credentials[3];
+            String   sq2         = credentials[4];
+            
+            String phone         = credentials[5];
+            
+            deleteUser(old);
+            
+            database.setWritable(true);
+		PrintWriter writer = new PrintWriter(new BufferedWriter((new FileWriter(database, true))));
+
+		writer.write(user + "\t" + pass + "\t" + email + 
+                        "\t" + sq1 + "\t" + sq2 + "\t" + phone + System.lineSeparator());
+
+            writer.close();
+            database.setWritable(false);
+        }/*****************************REPLACE.USERNAME*************************/
 }/********************************USER.DATABASE_CLASS***************************/

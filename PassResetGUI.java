@@ -7,14 +7,9 @@ import javax.naming.NameNotFoundException;
 import javax.swing.SwingUtilities;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Buyer's Remorse
+ *  Password reset pop-up.
+ *  @author Heather N. Larsen
+ *  @version    1.0    2018/09/15:20:08
  */
 public class PassResetGUI extends javax.swing.JPanel {
     private String val;
